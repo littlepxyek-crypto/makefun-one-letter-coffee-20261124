@@ -2,10 +2,10 @@
 """One Letter: Coffee or Tea — entry program.
 
 This program writes exactly ONE character to the output file entry.txt:
-the letter "A".
+the letter "B".
 
 In this competition's mapping, A means coffee and B means tea.
-The entrant is a coffee person, so the answer is A.
+The entrant chose tea, so the answer is B.
 
 The file must contain exactly one character: one byte, UTF-8, no newline,
 no punctuation, nothing else. A sealed gate checks that entry.txt is
@@ -18,7 +18,7 @@ before exiting.
 import os
 import sys
 
-LETTER = "A"
+LETTER = "B"
 OUTPUT_FILENAME = "entry.txt"
 
 
@@ -43,13 +43,13 @@ def write_entry(output_dir: str) -> str:
 
 
 def verify_entry(path: str) -> None:
-    """Read entry.txt back and check it holds exactly the letter "A".
+    """Read entry.txt back and check it holds exactly the letter "B".
 
     Raises ValueError with a clear message if anything is off.
     """
     with open(path, "rb") as f:
         raw = f.read()
-    # Byte-level check first: the letter "A" is exactly 1 byte in UTF-8.
+    # Byte-level check first: the letter "B" is exactly 1 byte in UTF-8.
     # Anything longer — a BOM, a stray newline, hidden extra bytes — fails
     # here, before any text-level decoding can mask it.
     if len(raw) != 1:
