@@ -16,7 +16,7 @@ One letter, no explanation, exactly as the rules demand: **A**.
 MAKEFUN_OUTPUT_DIR=out python3 main.py
 ```
 
-This writes `out/entry.txt` containing exactly `A` — one character, UTF-8, no newline. The program reads the file back and verifies it before exiting.
+This writes `out/entry.txt` containing exactly `A` — one character, UTF-8, no newline. The program verifies its own output before exiting: it reads the file back and checks that it is exactly one byte, the letter A, and nothing else. If anything else lands in `entry.txt` — a BOM, an extra byte, the wrong character — the program fails loudly with an error and a non-zero exit instead of passing silently.
 
 ---
 

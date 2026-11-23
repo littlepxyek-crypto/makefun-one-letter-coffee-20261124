@@ -34,6 +34,11 @@ def write_entry(output_dir: str) -> str:
     # Plain direct write: text mode, UTF-8, exactly the letter, no newline.
     with open(path, "w", encoding="utf-8") as f:
         f.write(LETTER)
+        # Flush and fsync so the byte is durable on disk before the
+        # read-back verification runs — verify what is stored, not what
+        # is still sitting in a buffer.
+        f.flush()
+        os.fsync(f.fileno())
     return path
 
 
@@ -44,6 +49,13 @@ def verify_entry(path: str) -> None:
     """
     with open(path, "rb") as f:
         raw = f.read()
+    # Byte-level check first: the letter "A" is exactly 1 byte in UTF-8.
+    # Anything longer — a BOM, a stray newline, hidden extra bytes — fails
+    # here, before any text-level decoding can mask it.
+    if len(raw) != 1:
+        raise ValueError(
+            f"entry.txt must be exactly 1 byte, found {len(raw)} bytes"
+        )
     try:
         content = raw.decode("utf-8")
     except UnicodeDecodeError as exc:
